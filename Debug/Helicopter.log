@@ -1,0 +1,6 @@
+﻿  Demo.cpp
+f:\n-file\kuliah\semester 5\grafkom\grafika komputer dan visualisasi\vs\helicopter\demo.cpp(245): warning C4305: 'initializing': truncation from 'double' to 'float'
+f:\n-file\kuliah\semester 5\grafkom\grafika komputer dan visualisasi\vs\helicopter\demo.cpp(407): warning C4305: 'initializing': truncation from 'double' to 'float'
+f:\n-file\kuliah\semester 5\grafkom\grafika komputer dan visualisasi\vs\helicopter\demo.cpp(573): warning C4305: 'initializing': truncation from 'double' to 'float'
+f:\n-file\kuliah\semester 5\grafkom\grafika komputer dan visualisasi\vs\helicopter\demo.cpp(702): warning C4305: 'initializing': truncation from 'double' to 'float'
+  Helicopter.vcxproj -> F:\N-File\Kuliah\Semester 5\Grafkom\Grafika Komputer dan Visualisasi\vs\Debug\Helicopter.exe
