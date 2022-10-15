@@ -1,6 +1,8 @@
 #include "Demo.h"
 using namespace std;
 #include <math.h>
+#include<numeric>
+#include<vector>
 
 Demo::Demo() {
 
@@ -132,6 +134,13 @@ void Demo::Update(double deltaTime) {
 
 		goalPosX = wayPointX[goalPosI];
 		goalPosZ = wayPointZ[goalPosI];
+
+		vector<float> v1 = { stepX, 0, stepZ };
+		vector<float> v2 = { goalPosX, 0, goalPosZ };
+
+		dotP = -1 * atan2(stepZ - goalPosZ, stepX - goalPosX);
+
+		printf("%f", dotP);
 	}
 }
 
@@ -152,7 +161,7 @@ void Demo::Render() {
 
 	// LookAt camera (position, target/direction, up)
 	glm::mat4 view = glm::lookAt(glm::vec3(0, 50, 5), glm::vec3(5, 0, 5), glm::vec3(0, 1, 0));
-	//glm::mat4 view = glm::lookAt(glm::vec3(0, 5, 15), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
+	//glm::mat4 view = glm::lookAt(glm::vec3(0, 5, 40), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
 	GLint viewLoc = glGetUniformLocation(this->shaderProgram, "view");
 	glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
 
@@ -444,7 +453,7 @@ void Demo::DrawColoredBody()
 	glm::mat4 model;
 
 	model = glm::translate(model, glm::vec3(stepX, 3, stepZ));
-
+	model = glm::rotate(model, dotP, glm::vec3(0, 1, 0));
 	model = glm::scale(model, glm::vec3(3, 3, 3));
 
 	GLint modelLoc = glGetUniformLocation(this->shaderProgram, "model");
@@ -514,10 +523,10 @@ void Demo::BuildColoredTail() {
 
 		// ------
 		// front
-		1.75, -.1, .3, 0, 0,  // 0
-		1.85, -.1, .3, 1, 0,   // 1
-		1.85,  .1, .3, 1, 1,   // 2
-		1.75,  .1, .3, 0, 1,  // 3
+		1.75, -.05, .3, 0, 0,  // 0
+		1.85, -.05, .3, 1, 0,   // 1
+		1.85,  .05, .3, 1, 1,   // 2
+		1.75,  .05, .3, 0, 1,  // 3
 
 		// right
 		1.85,  .05,  .3, 0, 0,  // 4
@@ -611,7 +620,7 @@ void Demo::DrawColoredTail()
 
 	glm::mat4 model;
 	model = glm::translate(model, glm::vec3(stepX, 3, stepZ));
-	
+	model = glm::rotate(model, dotP, glm::vec3(0, 1, 0));
 	model = glm::scale(model, glm::vec3(3, 3, 3));
 
 	GLint modelLoc = glGetUniformLocation(this->shaderProgram, "model");
@@ -644,40 +653,40 @@ void Demo::BuildColored2ndMotor() {
 	float vertices[] = {
 		// format position, tex coords
 		// front
-		-.4, -.1, .4, 0, 0,  // 0
-		.4, -.1, .4, 1, 0,  // 1
-		.4,  .1, .4, 1, 1,  // 2
-		-.4,  .1, .4, 0, 1,  // 3
+		1.35, -.15, .4, 0, 0,  // 0
+		2.25, -.15, .4, 1, 0,   // 1
+		2.25,  .15, .4, 1, 1,   // 2
+		1.35,  .15, .4, 0, 1,  // 3
 
 		// right
-		.4,  .1,  .4, 0, 0,  // 4
-		.4,  .1, .3, 1, 0,  // 5
-		.4, -.1, .3, 1, 1,  // 6
-		.4, -.1,  .4, 0, 1,  // 7
+		2.25,  .15,  .4, 0, 0,  // 4
+		2.25,  .15, .3, 1, 0,  // 5
+		2.25, -.15, .3, 1, 1,  // 6
+		2.25, -.15,  .4, 0, 1,  // 7
 
 		// back
-		-.4, -.1, .3, 0, 0, // 8 
-		.4, -.1, .3, 1, 0, // 9
-		.4, .1, .3, 1, 1, // 10
-		-.4, .1, .3, 0, 1, // 11
+		1.35, -.15, .3, 0, 0, // 8 
+		2.25, -.15, .3, 1, 0, // 9
+		2.25, .15, .3, 1, 1, // 10
+		1.35, .15, .3, 0, 1, // 11
 
 		// left
-		-.4, -.1, .3, 0, 0, // 12
-		-.4, -.1,  .4, 1, 0, // 13
-		-.4,  .1,  .4, 1, 1, // 14
-		-.4,  .1, .3, 0, 1, // 15
+		1.35, -.15, .3, 0, 0, // 12
+		1.35, -.15, .4, 1, 0, // 13
+		1.35,  .15, .4, 1, 1, // 14
+		1.35,  .15, .3, 0, 1, // 15
 
 		// upper
-		.4, .1,  .4, 0, 0,   // 16
-		.4, .1,  .4, 1, 0,  // 17
-		.4, .1, .3, 1, 1,  // 18
-		.4, .1, .3, 0, 1,   // 19
+		2.25, .15,  .4, 0, 0,   // 16
+		2.25, .15,  .4, 1, 0,  // 17
+		2.25, .15, .3, 1, 1,  // 18
+		2.25, .15, .3, 0, 1,   // 19
 
 		// bottom
-		-.4, -.1, .3, 0, 0, // 20
-		.4, -.1, .3, 1, 0,  // 21
-		.4, -.1, .4, 1, 1,  // 22
-		-.4, -.1, .4, 0, 1, // 23
+		1.35, -.15, .3, 0, 0, // 20
+		2.25, -.15, .3, 1, 0,  // 21
+		2.25, -.15,  .4, 1, 1,  // 22
+		1.35, -.15,  .4, 0, 1, // 23
 	};
 
 	unsigned int indices[] = {
@@ -733,8 +742,9 @@ void Demo::DrawColored2ndMotor()
 
 	glm::mat4 model;
 
-	model = glm::translate(model, glm::vec3(5.5 + stepX, 3, stepZ));
-	model = glm::rotate(model, angle, glm::vec3(0, 0, 1));
+	model = glm::translate(model, glm::vec3(stepX, 3, stepZ));
+	model = glm::rotate(model, dotP, glm::vec3(0, 1, 0));
+	//model = glm::rotate(model, angle, glm::vec3(0, 0, 1));
 	model = glm::scale(model, glm::vec3(3, 3, 3));
 
 	GLint modelLoc = glGetUniformLocation(this->shaderProgram, "model");
